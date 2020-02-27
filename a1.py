@@ -424,7 +424,7 @@ def part3_get_tf(df):
     for file_list in data:
         tf_dict = {}
         just_wc = file_list[2:]
-        no_of_words = np.count_nonzero(just_wc)
+        no_of_words = sum(just_wc)
         for i, count in enumerate(just_wc):
             for idx, totcount in enumerate(just_tot_wc):
                 if i == idx:

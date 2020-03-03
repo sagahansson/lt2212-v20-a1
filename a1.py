@@ -414,7 +414,7 @@ def part3_get_tf(df):
     data = df.values
     column_labels = df.columns
     words = column_labels[2:]
-    df_summed = df.sum(axis=0)
+    df_summed = df.sum(axis=1)
     summed_data = df_summed.values
     just_tot_wc = summed_data[2:]
 

@@ -412,11 +412,8 @@ def part3_get_tf(df):
 
     """
     data = df.values
-    column_labels = df.columns
+    column_labels = df.columns    
     words = column_labels[2:]
-    df_summed = df.sum(axis=1)
-    summed_data = df_summed.values
-    just_tot_wc = summed_data[2:]
 
     tf_dict = {}
     tf_dicts = []
@@ -424,20 +421,12 @@ def part3_get_tf(df):
     for file_list in data:
         tf_dict = {}
         just_wc = file_list[2:]
-        no_of_words = sum(just_wc)
         for i, count in enumerate(just_wc):
-            for idx, totcount in enumerate(just_tot_wc):
-                if i == idx:
-                    if type(count) == int:
-                        file_info = list(file_list[:2])
-                        word = words[i]
-                        file_info.append(word)
-                        key = tuple(file_info)
-                        if no_of_words == 0:
-                            term_freq = 0
-                        else:
-                            term_freq = count/no_of_words
-                        tf_dict[key] = term_freq
+            word = words[i]
+            file_info = list(file_list[:2])
+            file_info.append(word)
+            key = tuple(file_info)
+            tf_dict[key] = count
         tf_dicts.append(tf_dict)
 
     return tf_dicts
@@ -525,7 +514,7 @@ def part3_tfidf(df):
 
 def part_bonus(df):
     """
-    Runs an SVM on a dataframe, and prints the accuracy score.
+    Runs K nearest neibours on a dataframe, and prints the accuracy score.
 
     Parameters
     ----------
@@ -540,9 +529,10 @@ def part_bonus(df):
     y = df['Directory']
 
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.20, random_state=42)
-    svclassifier = SVC(kernel='linear', random_state=42)
-    svclassifier.fit(x_train, y_train)
 
-    pred = svclassifier.predict(x_test)
+    classifier = KNeighborsClassifier(n_neighbors=5)
+    classifier.fit(x_train, y_train)
+
+    y_pred = classifier.predict(x_test)
     
-    print(accuracy_score(y_test, pred))
+    print(accuracy_score(y_test, y_pred))
